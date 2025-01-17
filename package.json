@@ -1,0 +1,19 @@
+{
+  "name": "be-hotelmanage",
+  "version": "1.0.0",
+  "description": "hotel management project",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LEE-DHARAN/BE-HOTELMANAGE.git"
+  },
+  "author": "murali",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/LEE-DHARAN/BE-HOTELMANAGE/issues"
+  },
+  "homepage": "https://github.com/LEE-DHARAN/BE-HOTELMANAGE#readme"
+}
