@@ -4,8 +4,18 @@ const {
   getAvailableRooms,
   allocateRoom,
 } = require("../controllers/roomController");
+const authMiddleware = require("../middleware/authMiddleware");
+const roleMiddleware = require("../middleware/roleMiddleware");
 
 router.get("/available", getAvailableRooms);
-router.post("/allocate", allocateRoom);
+
+router.post(
+  "/allocate",
+  authMiddleware,
+  roleMiddleware(["admin", "staff"]),
+  allocateRoom
+);
+
+
 
 module.exports = router;
