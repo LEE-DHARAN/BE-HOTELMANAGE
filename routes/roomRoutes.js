@@ -1,21 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const {
-  getAvailableRooms,
-  allocateRoom,
-} = require("../controllers/roomController");
-const authMiddleware = require("../middleware/authMiddleware");
-const roleMiddleware = require("../middleware/roleMiddleware");
+const roomController = require("../controllers/roomController");
 
-router.get("/available", getAvailableRooms);
+// Route to get all available rooms
+router.get("/rooms/available", roomController.getAvailableRooms);
 
-router.post(
-  "/allocate",
-  authMiddleware,
-  roleMiddleware(["admin", "staff"]),
-  allocateRoom
-);
-
-
+// Route to allocate a room to a resident
+router.post("/rooms/allocate", roomController.allocateRoom);
 
 module.exports = router;

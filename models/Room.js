@@ -1,15 +1,36 @@
 const mongoose = require("mongoose");
+const Schema = mongoose.Schema;
 
-const roomSchema = new mongoose.Schema({
-  roomNumber: { type: String, required: true, unique: true },
-  type: { type: String, enum: ["single", "shared"], required: true },
-  floor: { type: Number, required: true },
-  status: {
-    type: String,
-    enum: ["available", "occupied", "maintenance"],
-    default: "available",
+// Create Room Schema
+const RoomSchema = new Schema(
+  {
+    roomNumber: {
+      type: String,
+      required: true,
+      unique: true, // Ensure room number is unique
+    },
+    type: {
+      type: String,
+      enum: ["Single", "Double", "Suite"], // Room types
+      required: true,
+    },
+    price: {
+      type: Number,
+      required: true,
+    },
+    status: {
+      type: String,
+      enum: ["available", "occupied"],
+      default: "available", // Default status is 'available'
+    },
+    residentId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Resident", // Reference to the Resident model
+      default: null, // Initially no resident assigned
+    },
   },
-  residentId: { type: mongoose.Schema.Types.ObjectId, ref: "Resident" },
-});
+  { timestamps: true } // Automatically adds createdAt and updatedAt fields
+);
 
-module.exports = mongoose.model("Room", roomSchema);
+// Create and export the model
+module.exports = mongoose.model("Room", RoomSchema);

@@ -1,13 +1,26 @@
 const express = require("express");
 const router = express.Router();
-const {
-  createRequest,
-  getRequests,
-} = require("../controllers/maintenanceController");
-const authMiddleware = require("../middleware/authMiddleware");
-const roleMiddleware = require("../middleware/roleMiddleware");
+const maintenanceController = require("../controllers/maintenanceController");
 
-router.post("/", authMiddleware, createRequest);
-router.get('/', authMiddleware, roleMiddleware(['admin']), getRequests);
+// Create a new maintenance request
+router.post("/maintenance", maintenanceController.createMaintenanceRequest);
+
+// Get all maintenance requests (can filter by status)
+router.get("/maintenance", maintenanceController.getMaintenanceRequests);
+
+// Get a specific maintenance request by ID
+router.get("/maintenance/:id", maintenanceController.getMaintenanceRequestById);
+
+// Update the status of a maintenance request
+router.put(
+  "/maintenance/:id/status",
+  maintenanceController.updateMaintenanceRequestStatus
+);
+
+// Delete a maintenance request
+router.delete(
+  "/maintenance/:id",
+  maintenanceController.deleteMaintenanceRequest
+);
 
 module.exports = router;
