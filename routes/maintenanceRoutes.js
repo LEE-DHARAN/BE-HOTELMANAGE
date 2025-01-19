@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const { validateObjectId } = require("../middleware/validationMiddleware");
 const maintenanceController = require("../controllers/maintenanceController");
 
 // Create a new maintenance request
@@ -9,7 +10,7 @@ router.post("/maintenance", maintenanceController.createMaintenanceRequest);
 router.get("/maintenance", maintenanceController.getMaintenanceRequests);
 
 // Get a specific maintenance request by ID
-router.get("/maintenance/:id", maintenanceController.getMaintenanceRequestById);
+router.get("/maintenance/:id",validateObjectId, maintenanceController.getMaintenanceRequestById);
 
 // Update the status of a maintenance request
 router.put(
