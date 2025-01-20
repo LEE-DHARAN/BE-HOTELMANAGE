@@ -6,7 +6,6 @@ const maintenanceRoutes = require("./routes/maintenanceRoutes");
 const billingRoutes = require("./routes/billingRoutes");
 const residentRoutes = require("./routes/residentRoutes");
 const roomRoutes = require("./routes/roomRoutes");
-const { validateObjectId } = require("./middlewares");
 const auth = require("./middleware/authMiddleware")
 const cookieParser = require("cookie-parser");
 dotenv.config();
@@ -26,7 +25,7 @@ app.use(
 app.use(express.json());
 
 // Routes
-app.use("/api/maintenance", auth, maintenanceRoutes);
+app.use("/api/maintenance", maintenanceRoutes);
 app.use("/api/billing", billingRoutes);
 app.use("/api/residents", residentRoutes);
 app.use("/api/rooms", roomRoutes);

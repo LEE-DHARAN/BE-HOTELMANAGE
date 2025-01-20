@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 // Middleware to validate MongoDB ObjectId
-function validateObjectId(req, res, next) {
+const validateObjectId = (req, res, next)=> {
   const { id } = req.params;
 
   // Check if the id is a valid ObjectId
@@ -13,4 +13,4 @@ function validateObjectId(req, res, next) {
   next();
 }
 
-module.exports = { validateObjectId };
+module.exports = validateObjectId ;

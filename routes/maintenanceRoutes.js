@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-const { validateObjectId } = require("../middleware/validationMiddleware");
+const validateObjectId = require("../middleware/validationMiddleware");
 const maintenanceController = require("../controllers/maintenanceController");
 
 // Create a new maintenance request
@@ -14,13 +14,13 @@ router.get("/maintenance/:id",validateObjectId, maintenanceController.getMainten
 
 // Update the status of a maintenance request
 router.put(
-  "/maintenance/:id/status",
+  "/maintenance/:id/status",validateObjectId,
   maintenanceController.updateMaintenanceRequestStatus
 );
 
 // Delete a maintenance request
 router.delete(
-  "/maintenance/:id",
+  "/maintenance/:id",validateObjectId,
   maintenanceController.deleteMaintenanceRequest
 );
 
