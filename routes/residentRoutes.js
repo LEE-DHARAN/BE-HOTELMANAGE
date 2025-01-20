@@ -7,7 +7,7 @@ const validateObjectId = require("../middleware/validationMiddleware");
 router.post("/resident", residentController.createResident);
 
 // Get a specific resident by ID
-router.get("/resident/:id",validateObjectId, residentController.getResident);
+router.get("/resident/:id",validateObjectId, residentController.getResidents);
 
 // Update a resident's information
 router.put("/resident/:id",validateObjectId, residentController.updateResident);

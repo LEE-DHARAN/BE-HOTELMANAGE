@@ -8,8 +8,7 @@ const auth = require("../middleware/authMiddleware");
 // Create a new billing record
 router.post(
   "/billing",
-  auth.checkAuth,
-  auth.allowRoles(["admin"]),
+ 
   billingController.createBilling
 );
 

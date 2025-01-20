@@ -1,45 +1,12 @@
-const Resident = require("../models/resident");
-const Room = require("../models/room"); // Assuming we need to check room status
+const Resident = require("../models/Resident");
+const Room = require("../models/room");
+const mongoose = require("mongoose");
 
-// Create a new resident
-exports.createResident = async (req, res) => {
-  const { name, contact, roomId } = req.body;
-
-  // Validate required fields
-  if (!name || !contact || !roomId) {
-    return res
-      .status(400)
-      .json({ msg: "Name, Contact, and RoomId are required" });
-  }
-
+// Get all residents
+exports.getResidents = async (req, res) => {
   try {
-    // Check if the room exists
-    const room = await Room.findById(roomId);
-    if (!room) {
-      return res.status(404).json({ msg: "Room not found" });
-    }
-
-    // Check if the room is already occupied
-    if (room.status === "occupied") {
-      return res.status(400).json({ msg: "Room is already occupied" });
-    }
-
-    // Create a new resident
-    const resident = new Resident({
-      name,
-      contact,
-      roomId,
-    });
-
-    // Save the resident
-    await resident.save();
-
-    // Update room status to "occupied" since it's assigned to a resident
-    room.status = "occupied";
-    await room.save();
-
-    // Return the created resident data
-    res.status(201).json(resident);
+    const residents = await Resident.find().populate("roomId"); // Populate room details
+    res.json(residents);
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error");
@@ -47,16 +14,13 @@ exports.createResident = async (req, res) => {
 };
 
 // Get a specific resident by ID
-exports.getResident = async (req, res) => {
+exports.getResidentById = async (req, res) => {
+  const { id } = req.params;
   try {
-    const resident = await Resident.findById(req.params.id).populate("roomId");
-
-    // Check if the resident exists
+    const resident = await Resident.findById(id).populate("roomId");
     if (!resident) {
       return res.status(404).json({ msg: "Resident not found" });
     }
-
-    // Return the resident data
     res.json(resident);
   } catch (error) {
     console.error(error);
@@ -64,33 +28,71 @@ exports.getResident = async (req, res) => {
   }
 };
 
-// Update a resident's information
-exports.updateResident = async (req, res) => {
-  const { name, contact, roomId } = req.body;
-
-  // Validate required fields
-  if (!name || !contact || !roomId) {
-    return res
-      .status(400)
-      .json({ msg: "Name, Contact, and RoomId are required" });
-  }
+// Create a new resident
+exports.createResident = async (req, res) => {
+  const { name, contact, email, roomId } = req.body;
 
   try {
-    // Check if the resident exists
-    const resident = await Resident.findById(req.params.id);
+    // Check if the resident email already exists
+    const existingResident = await Resident.findOne({ email });
+    if (existingResident) {
+      return res
+        .status(400)
+        .json({ msg: "Resident with this email already exists" });
+    }
+
+    // Check if the room exists and is available
+    const room = await Room.findById(roomId);
+    if (!room) {
+      return res.status(404).json({ msg: "Room not found" });
+    }
+
+    if (room.status !== "available") {
+      return res.status(400).json({ msg: "Room is not available" });
+    }
+
+    // Create new resident
+    const newResident = new Resident({
+      name,
+      contact,
+      email,
+      roomId,
+    });
+
+    // Update the room status to occupied
+    room.status = "occupied";
+    await room.save();
+
+    // Save the resident
+    await newResident.save();
+
+    res.status(201).json(newResident);
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
+};
+
+// Update a resident's details
+exports.updateResident = async (req, res) => {
+  const { id } = req.params;
+  const { name, contact, email, roomId } = req.body;
+
+  try {
+    // Find resident by ID
+    const resident = await Resident.findById(id);
     if (!resident) {
       return res.status(404).json({ msg: "Resident not found" });
     }
 
-    // Update the resident's details
+    // Update resident details
     resident.name = name || resident.name;
     resident.contact = contact || resident.contact;
+    resident.email = email || resident.email;
     resident.roomId = roomId || resident.roomId;
 
-    // Save the updated resident information
     await resident.save();
 
-    // Return the updated resident data
     res.json(resident);
   } catch (error) {
     console.error(error);
@@ -98,30 +100,25 @@ exports.updateResident = async (req, res) => {
   }
 };
 
-// Delete a resident and free up the room
+// Delete a resident
 exports.deleteResident = async (req, res) => {
-  try {
-    const resident = await Resident.findById(req.params.id);
+  const { id } = req.params;
 
-    // Check if the resident exists
+  try {
+    // Find and delete resident by ID
+    const resident = await Resident.findByIdAndDelete(id);
     if (!resident) {
       return res.status(404).json({ msg: "Resident not found" });
     }
 
-    // Get the room assigned to the resident
+    // Find the associated room and mark it as available
     const room = await Room.findById(resident.roomId);
-
-    // Free up the room by changing its status
     if (room) {
       room.status = "available";
       await room.save();
     }
 
-    // Delete the resident from the database
-    await resident.remove();
-
-    // Return a success message
-    res.json({ msg: "Resident deleted and room is now available" });
+    res.json({ msg: "Resident deleted successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error");

@@ -25,9 +25,9 @@ app.use(
 app.use(express.json());
 
 // Routes
-app.use("/api/maintenance", maintenanceRoutes);
-app.use("/api/billing", billingRoutes);
-app.use("/api/residents", residentRoutes);
+app.use("/api", maintenanceRoutes);
+app.use("/api", billingRoutes);
+app.use("/api", residentRoutes);
 app.use("/api/rooms", roomRoutes);
 app.use(errorMiddleware);
 
