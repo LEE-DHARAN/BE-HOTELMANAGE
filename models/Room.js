@@ -7,11 +7,11 @@ const RoomSchema = new Schema(
     roomNumber: {
       type: String,
       required: true,
-      unique: true, // Ensure room number is unique
+      unique: true, 
     },
     type: {
       type: String,
-      enum: ["Single", "Double", "Suite"], // Room types
+      enum: ["Single", "Double", "Suite"], 
       required: true,
     },
     price: {
@@ -21,16 +21,16 @@ const RoomSchema = new Schema(
     status: {
       type: String,
       enum: ["available", "occupied"],
-      default: "available", // Default status is 'available'
+      default: "available", 
     },
     residentId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Resident", // Reference to the Resident model
-      default: null, // Initially no resident assigned
+      ref: "Resident", 
+      default: null, 
     },
   },
-  { timestamps: true } // Automatically adds createdAt and updatedAt fields
+  { timestamps: true } 
 );
 
-// Create and export the model
+
 module.exports = mongoose.model("Room", RoomSchema);

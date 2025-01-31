@@ -6,28 +6,28 @@ const MaintenanceSchema = new Schema(
   {
     description: {
       type: String,
-      required: true, // Description of the issue
+      required: true, 
     },
     roomId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Room", // Reference to the Room model
+      ref: "Room", 
       required: true,
     },
     status: {
       type: String,
-      enum: ["Pending", "In Progress", "Completed"], // Valid statuses for maintenance requests
-      default: "Pending", // Default status is 'Pending'
+      enum: ["Pending", "In Progress", "Completed"], 
+      default: "Pending", 
     },
     createdAt: {
       type: Date,
-      default: Date.now, // Automatically set the creation date
+      default: Date.now, 
     },
     updatedAt: {
       type: Date,
-      default: Date.now, // Automatically set the update date
+      default: Date.now,
     },
   },
-  { timestamps: true } // Automatically adds createdAt and updatedAt fields
+  { timestamps: true } 
 );
 
 // Create and export the model

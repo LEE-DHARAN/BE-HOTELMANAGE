@@ -4,15 +4,15 @@ const residentController = require("../controllers/residentController");
 const validateObjectId = require("../middleware/validationMiddleware");
 
 // Create a new resident
+router.get("/resident", residentController.getResidents);
+
+
 router.post("/resident", residentController.createResident);
 
-// Get a specific resident by ID
-router.get("/resident/:id",validateObjectId, residentController.getResidents);
 
-// Update a resident's information
-router.put("/resident/:id",validateObjectId, residentController.updateResident);
+// router.put("/resident/:id",validateObjectId, residentController.updateResident);
 
-// Delete a resident and free up the room
-router.delete("/resident/:id",validateObjectId, residentController.deleteResident);
+
+// router.delete("/resident/:id",validateObjectId, residentController.deleteResident);
 
 module.exports = router;

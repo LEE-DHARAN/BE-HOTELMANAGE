@@ -14,17 +14,17 @@ const ResidentSchema = new Schema(
     },
    email: {
       type: String,
-      unique: true, // Ensure email is unique
+      unique: true, 
       required: true,
     },
    roomId: {
      type: mongoose.Schema.Types.ObjectId,
-     ref: "Room", // Reference to the Room model
-      required: true,
+     ref: "Room", 
+     required: false,
    },
   },
-  { timestamps: true } // Automatically adds createdAt and updatedAt fields
+  { timestamps: true } 
 );
 
-// Create and export the model
+
 module.exports = mongoose.model("Resident", ResidentSchema);

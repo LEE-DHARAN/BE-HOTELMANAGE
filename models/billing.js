@@ -6,12 +6,12 @@ const BillingSchema = new Schema(
   {
     residentId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Resident", // Reference to the Resident model
+      ref: "Resident", 
       required: true,
     },
     roomId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Room", // Reference to the Room model
+      ref: "Room", 
       required: true,
     },
     amount: {
@@ -24,12 +24,12 @@ const BillingSchema = new Schema(
     },
     status: {
       type: String,
-      enum: ["Pending", "Paid", "Overdue"], // Valid statuses
+      enum: ["Pending", "Paid", "Overdue"], 
       default: "Pending",
     },
   },
-  { timestamps: true } // Automatically adds createdAt and updatedAt fields
+  { timestamps: true } 
 );
 
-// Create and export the model
+
 module.exports = mongoose.model("Billing", BillingSchema);
