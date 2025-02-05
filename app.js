@@ -7,6 +7,7 @@ const billingRoutes = require("./routes/billingRoutes");
 const residentRoutes = require("./routes/residentRoutes");
 const roomRoutes = require("./routes/roomRoutes");
 const cookieParser = require("cookie-parser");
+const authRoutes = require("./routes/authRoutes")
 dotenv.config();
 
 const app = express();
@@ -28,6 +29,7 @@ app.use("/api", maintenanceRoutes);
 app.use("/api", billingRoutes);
 app.use("/api", residentRoutes);
 app.use("/api", roomRoutes);
+app.use("/api", authRoutes);
 app.use(errorMiddleware);
 
 

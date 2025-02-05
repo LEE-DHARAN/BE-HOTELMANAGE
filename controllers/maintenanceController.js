@@ -3,30 +3,27 @@ const Room = require("../models/room");
 
 
 exports.createMaintenanceRequest = async (req, res) => {
-  const { description, roomId } = req.body;
+  const { description, roomNumber } = req.body;
 
   
-  if (!description || !roomId) {
+  if (!description || !roomNumber) {
     return res.status(400).json({ msg: "Description and RoomId are required" });
   }
 
   try {
    
-    const room = await Room.findById(roomId);
+    const room = await Room.findOne({ roomNumber: roomNumber.toString() });
     if (!room) {
       return res.status(404).json({ msg: "Room not found" });
     }
 
-    
     const maintenanceRequest = new Maintenance({
       description,
-      roomId,
-      status: "Pending", 
+      roomId: room._id, // Store room ID instead of room number
+      status: "Pending",
     });
-
     
     await maintenanceRequest.save();
-
     
     res.status(201).json(maintenanceRequest);
   } catch (error) {
@@ -37,31 +34,21 @@ exports.createMaintenanceRequest = async (req, res) => {
 
 
 exports.getMaintenanceRequests = async (req, res) => {
-  const { status } = req.query; 
-
   try {
-    let filter = {};
-    if (status) {
-      filter.status = status;
-    }
-
-    const maintenanceRequests = await Maintenance.find(filter).populate(
+    const maintenanceRequests = await Maintenance.find().populate(
       "roomId"
     ); 
 
-   
     if (maintenanceRequests.length === 0) {
       return res.status(404).json({ msg: "No maintenance requests found" });
     }
 
-   
     res.json(maintenanceRequests);
   } catch (error) {
     console.error(error);
     res.status(500).send("Server error");
   }
 };
-
 
 exports.getMaintenanceRequestById = async (req, res) => {
   try {

@@ -12,18 +12,18 @@ const ResidentSchema = new Schema(
       type: String,
       required: true,
     },
-   email: {
+    email: {
       type: String,
-      unique: true, 
+      unique: true,
       required: true,
     },
-   roomId: {
-     type: mongoose.Schema.Types.ObjectId,
-     ref: "Room", 
-     required: false,
-   },
+    roomId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Room",
+      required: false,
+    },
   },
-  { timestamps: true } 
+  { timestamps: true }
 );
 
 
