@@ -47,6 +47,18 @@ exports.createResident = async (req, res) => {
     });
     
     await newResident.save();
+
+    const customer = await Customer.findById(name);
+    
+    //send email
+      await sendEmail({
+        to: customer.email,
+        subject: "Resident created",
+        text: `Resident created on ${date} at ${time}`,
+      });
+
+
+
     res.status(201).json(newResident);
   } catch (error) {
     console.error(error);

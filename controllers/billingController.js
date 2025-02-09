@@ -1,5 +1,7 @@
+const billing = require("../models/billing");
 const Billing = require("../models/billing");
 const Room = require("../models/room");
+const sendEmail = require("../utils/sendEmail");
 
 exports.createBilling = async (req, res) => {
   const { residentId, roomId, amount, dueDate } = req.body;
@@ -30,6 +32,18 @@ exports.createBilling = async (req, res) => {
     
     await billingRecord.save();
 
+         const billing = await billing.findById(residentId); 
+
+    //send email
+
+     await sendEmail({
+       to: billing.email,
+       subject: "billing Confirmation",
+       text: `Your billing is created on ${date} at ${time}`,
+     });
+
+
+    
     
     res.status(201).json(billingRecord);
   } catch (error) {

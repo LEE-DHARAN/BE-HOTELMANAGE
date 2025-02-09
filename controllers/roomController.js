@@ -108,6 +108,8 @@ exports.createRoom = async (req, res) => {
     });
 
     await newRoom.save();
+
+    
     res.status(201).json(newRoom);
   } catch (error) {
     console.error(error);
@@ -117,9 +119,9 @@ exports.createRoom = async (req, res) => {
 
 // Update room status
 exports.updateRoomStatus = async (req, res) => {
-  // Extract roomNumber from URL parameters and status from the request body
-  const { roomNumber } = req.params; // roomNumber comes from the URL params
-  const { status } = req.body; // status comes from the request body
+ 
+  const { roomNumber } = req.params; 
+  const { status } = req.body; 
 
   try {
     // Find the room by roomNumber

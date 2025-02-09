@@ -1,5 +1,6 @@
 const Maintenance = require("../models/maintenance");
 const Room = require("../models/room");
+const sendEmail = require("../utils/sendEmail");
 
 
 exports.createMaintenanceRequest = async (req, res) => {
@@ -11,7 +12,6 @@ exports.createMaintenanceRequest = async (req, res) => {
   }
 
   try {
-   
     const room = await Room.findOne({ roomNumber: roomNumber.toString() });
     if (!room) {
       return res.status(404).json({ msg: "Room not found" });
@@ -19,12 +19,14 @@ exports.createMaintenanceRequest = async (req, res) => {
 
     const maintenanceRequest = new Maintenance({
       description,
-      roomId: room._id, // Store room ID instead of room number
+      roomId: room._id,
       status: "Pending",
     });
-    
+
     await maintenanceRequest.save();
-    
+
+  
+
     res.status(201).json(maintenanceRequest);
   } catch (error) {
     console.error(error);
