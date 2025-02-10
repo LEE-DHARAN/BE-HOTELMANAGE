@@ -13,12 +13,12 @@ dotenv.config();
 const app = express();
 
 // Middleware
-app.use(
+/*app.use(
   cors({
     origin: "https://homanage.netlify.app/",
     credentials: true,
   })
-);
+);*/
 
 app.use(express.json());
 
