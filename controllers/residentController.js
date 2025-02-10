@@ -1,11 +1,11 @@
-const Resident = require("../models/resident");
-const Room = require("../models/room");
+const Residents = require("../models/resident.js");
+const Rooms = require("../models/room.js");
 const mongoose = require("mongoose");
 
 
 exports.getResidents = async (req, res) => {
   try {
-    const residents = await Resident.find().populate("roomId"); 
+    const residents = await Residents.find().populate("roomId"); 
     res.json(residents);
   } catch (error) {
     console.error(error);
@@ -17,7 +17,7 @@ exports.getResidents = async (req, res) => {
 exports.getResidentById = async (req, res) => {
   const { id } = req.params;
   try {
-    const resident = await Resident.findById(id).populate("roomId");
+    const resident = await Residents.findById(id).populate("roomId");
     if (!resident) {
       return res.status(404).json({ msg: "Resident not found" });
     }
@@ -33,14 +33,14 @@ exports.createResident = async (req, res) => {
 
   try {
     
-    const existingResident = await Resident.findOne({ email });
+    const existingResident = await Residents.findOne({ email });
     if (existingResident) {
       return res
         .status(400)
         .json({ msg: "Resident with this email already exists" });
     }
 
-    const newResident = new Resident({
+    const newResident = new Residents({
       name,
       contact,
       email
@@ -48,14 +48,7 @@ exports.createResident = async (req, res) => {
     
     await newResident.save();
 
-    const customer = await Customer.findById(name);
-    
-    //send email
-      await sendEmail({
-        to: customer.email,
-        subject: "Resident created",
-        text: `Resident created on ${date} at ${time}`,
-      });
+   
 
 
 
@@ -115,7 +108,7 @@ exports.updateResident = async (req, res) => {
 
   try {
     
-    const resident = await Resident.findById(id);
+    const resident = await Residents.findById(id);
     if (!resident) {
       return res.status(404).json({ msg: "Resident not found" });
     }
@@ -141,13 +134,13 @@ exports.deleteResident = async (req, res) => {
 
   try {
     
-    const resident = await Resident.findByIdAndDelete(id);
+    const resident = await Residents.findByIdAndDelete(id);
     if (!resident) {
       return res.status(404).json({ msg: "Resident not found" });
     }
 
     
-    const room = await Room.findById(resident.roomId);
+    const room = await Rooms.findById(resident.roomId);
     if (room) {
       room.status = "available";
       await room.save();

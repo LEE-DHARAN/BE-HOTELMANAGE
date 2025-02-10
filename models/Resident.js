@@ -19,7 +19,7 @@ const ResidentSchema = new Schema(
     },
     roomId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Room",
+      ref: "Rooms",
       required: false,
     },
   },
@@ -27,4 +27,4 @@ const ResidentSchema = new Schema(
 );
 
 
-module.exports = mongoose.model("Resident", ResidentSchema);
+module.exports = mongoose.model("Residents", ResidentSchema);

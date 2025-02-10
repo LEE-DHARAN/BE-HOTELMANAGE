@@ -10,7 +10,7 @@ const MaintenanceSchema = new Schema(
     },
     roomId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Room", 
+      ref: "Rooms", 
       required: true,
     },
     status: {
@@ -31,4 +31,4 @@ const MaintenanceSchema = new Schema(
 );
 
 // Create and export the model
-module.exports = mongoose.model("Maintenance", MaintenanceSchema);
+module.exports = mongoose.model("Maintenances", MaintenanceSchema);

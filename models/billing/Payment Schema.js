@@ -6,8 +6,8 @@ const paymentSchema = new mongoose.Schema({
   },
   amount: { type: Number, required: true },
   paymentDate: { type: Date, default: Date.now },
-  paymentMethod: { type: String, required: true }, // e.g., 'Stripe', 'PayPal'
-  paymentStatus: { type: String, default: "Completed" }, // e.g., 'Completed', 'Pending', 'Failed'
+  paymentMethod: { type: String, required: true }, 
+  paymentStatus: { type: String, default: "Completed" }, 
 });
 
 const Payment = mongoose.model("Payment", paymentSchema);

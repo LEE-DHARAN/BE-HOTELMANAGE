@@ -6,7 +6,7 @@ const residentSchema = new mongoose.Schema({
   roomType: { type: String, required: true },
   checkInDate: { type: Date, required: true },
   checkOutDate: { type: Date, required: true },
-  totalCharges: { type: Number, default: 0 }, // Total charges
+  totalCharges: { type: Number, default: 0 }, 
 });
 
 const Resident = mongoose.model("Resident", residentSchema);

@@ -6,12 +6,12 @@ const BillingSchema = new Schema(
   {
     residentId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Resident", 
+      ref: "Residents", 
       required: true,
     },
     roomId: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Room", 
+      ref: "Rooms", 
       required: true,
     },
     amount: {
@@ -32,4 +32,4 @@ const BillingSchema = new Schema(
 );
 
 
-module.exports = mongoose.model("Billing", BillingSchema);
+module.exports = mongoose.model("Billing", BillingSchema,'Billing');

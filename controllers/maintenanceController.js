@@ -1,6 +1,6 @@
-const Maintenance = require("../models/maintenance");
-const Room = require("../models/room");
-const sendEmail = require("../utils/sendEmail");
+const Maintenances = require("../models/maintenance.js");
+const Rooms = require("../models/room.js");
+
 
 
 exports.createMaintenanceRequest = async (req, res) => {
@@ -12,12 +12,12 @@ exports.createMaintenanceRequest = async (req, res) => {
   }
 
   try {
-    const room = await Room.findOne({ roomNumber: roomNumber.toString() });
+    const room = await Rooms.findOne({ roomNumber: "101"});
     if (!room) {
       return res.status(404).json({ msg: "Room not found" });
     }
 
-    const maintenanceRequest = new Maintenance({
+    const maintenanceRequest = new Maintenances({
       description,
       roomId: room._id,
       status: "Pending",
@@ -37,7 +37,7 @@ exports.createMaintenanceRequest = async (req, res) => {
 
 exports.getMaintenanceRequests = async (req, res) => {
   try {
-    const maintenanceRequests = await Maintenance.find().populate(
+    const maintenanceRequests = await Maintenances.find().populate(
       "roomId"
     ); 
 
@@ -54,7 +54,7 @@ exports.getMaintenanceRequests = async (req, res) => {
 
 exports.getMaintenanceRequestById = async (req, res) => {
   try {
-    const maintenanceRequest = await Maintenance.findById(
+    const maintenanceRequest = await Maintenances.findById(
       req.params.id
     ).populate("roomId");
 
@@ -86,7 +86,7 @@ exports.updateMaintenanceRequestStatus = async (req, res) => {
 
   try {
    
-    const maintenanceRequest = await Maintenance.findById(req.params.id);
+    const maintenanceRequest = await Maintenances.findById(req.params.id);
 
    
     if (!maintenanceRequest) {
@@ -110,7 +110,7 @@ exports.updateMaintenanceRequestStatus = async (req, res) => {
 
 exports.deleteMaintenanceRequest = async (req, res) => {
   try {
-    const maintenanceRequest = await Maintenance.findById(req.params.id);
+    const maintenanceRequest = await Maintenances.findById(req.params.id);
 
    
     if (!maintenanceRequest) {

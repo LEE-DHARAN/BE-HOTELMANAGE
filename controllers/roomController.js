@@ -1,12 +1,11 @@
-const Room = require("../models/room");
-const Resident = require("../models/resident");
-const mongoose = require('mongoose');
+const Rooms = require("../models/room.js");
+const Residents = require("../models/resident.js");
+const mongoose = require("mongoose");
 
 exports.getAvailableRooms = async (req, res) => {
   try {
-    
-    const rooms = await Room.find({ status: "available" });
-    
+    const rooms = await Rooms.find({ status: "available" });
+
     if (rooms.length === 0) {
       return res.status(404).json({ msg: "No available rooms found" });
     }
@@ -37,7 +36,7 @@ exports.allocateRoom = async (req, res) => {
   }
 
   try {
-    const room = await Room.findById(roomId);
+    const room = await Rooms.findById(roomId);
 
     if (!room) {
       return res.status(404).json({ msg: "Room not found" });
@@ -47,7 +46,7 @@ exports.allocateRoom = async (req, res) => {
       return res.status(400).json({ msg: "Room not available for allocation" });
     }
 
-    const resident = await Resident.findById(residentId);
+    const resident = await Residents.findById(residentId);
 
     if (!resident) {
       return res.status(404).json({ msg: "Resident not found" });
@@ -71,12 +70,10 @@ exports.allocateRoom = async (req, res) => {
   }
 };
 
-
-
 exports.getRoomByNumber = async (req, res) => {
   const { roomNumber } = req.params;
   try {
-    const room = await Room.findOne({ roomNumber });
+    const room = await Rooms.findOne({ roomNumber });
     if (!room) {
       return res.status(404).json({ msg: "Room not found2" });
     }
@@ -87,29 +84,28 @@ exports.getRoomByNumber = async (req, res) => {
   }
 };
 
-
 exports.createRoom = async (req, res) => {
   const { roomNumber, type, price, status, residentId } = req.body;
-  
+
   try {
-    
-    const existingRoom = await Room.findOne({ roomNumber });
+    const existingRoom = await Rooms.findOne({ roomNumber });
     if (existingRoom) {
-      return res.status(400).json({ msg: "Room with this number already exists" });
+      return res
+        .status(400)
+        .json({ msg: "Room with this number already exists" });
     }
 
     // Create a new room
-    const newRoom = new Room({
+    const newRoom = new Rooms({
       roomNumber,
       type,
       price,
       status,
-      residentId
+      residentId,
     });
 
     await newRoom.save();
 
-    
     res.status(201).json(newRoom);
   } catch (error) {
     console.error(error);
@@ -119,13 +115,12 @@ exports.createRoom = async (req, res) => {
 
 // Update room status
 exports.updateRoomStatus = async (req, res) => {
- 
-  const { roomNumber } = req.params; 
-  const { status } = req.body; 
+  const { roomNumber } = req.params;
+  const { status } = req.body;
 
   try {
     // Find the room by roomNumber
-    const room = await Room.findOne({ roomNumber });
+    const room = await Rooms.findOne({ roomNumber });
     if (!room) {
       return res.status(404).json({ msg: "Room not found" });
     }
@@ -142,13 +137,12 @@ exports.updateRoomStatus = async (req, res) => {
   }
 };
 
-
 // Delete a room
 exports.deleteRoom = async (req, res) => {
   const { roomNumber } = req.params;
 
   try {
-    const room = await Room.findOneAndDelete({ roomNumber });
+    const room = await Rooms.findOneAndDelete({ roomNumber });
     if (!room) {
       return res.status(404).json({ msg: "Room not found4" });
     }

@@ -134,12 +134,10 @@ exports.logoutResident = async (req, res) => {
   }
 };*/
 
-
-
-const User = require("../models/user");
+const User = require("../models/user.js");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
-const { JWT_SECRET } = require("../utils/config");
+const { JWT_SECRET } = require("../utils/config.js");
 
 const authController = {
   register: async (request, response) => {
