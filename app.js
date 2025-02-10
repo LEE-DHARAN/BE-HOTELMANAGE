@@ -7,18 +7,16 @@ const billingRoutes = require("./routes/billingRoutes");
 const residentRoutes = require("./routes/residentRoutes");
 const roomRoutes = require("./routes/roomRoutes");
 const cookieParser = require("cookie-parser");
-const authRoutes = require("./routes/authRoutes")
+const authRoutes = require("./routes/authRoutes");
 dotenv.config();
 
 const app = express();
 
-
-
 // Middleware
 app.use(
   cors({
-    origin: "http://localhost:5173", 
-    credentials: true, 
+    origin: "https://homanage.netlify.app/",
+    credentials: true,
   })
 );
 
@@ -32,10 +30,7 @@ app.use("/api", roomRoutes);
 app.use("/api", authRoutes);
 app.use(errorMiddleware);
 
-
 // Add cookie parser middleware
 app.use(cookieParser());
 
-
 module.exports = app;
-
