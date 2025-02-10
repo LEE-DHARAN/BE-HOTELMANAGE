@@ -15,8 +15,8 @@ const app = express();
 // Middleware
 app.use(
   cors({
-    origin: "https://homanage.netlify.app/"
-    //credentials: true,
+    origin: "https://homanage.netlify.app/",
+    credentials: true,
   })
 );
 
