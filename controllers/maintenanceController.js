@@ -12,7 +12,7 @@ exports.createMaintenanceRequest = async (req, res) => {
   }
 
   try {
-    const room = await Rooms.findOne({ roomNumber: "101"});
+    const room = await Rooms.findOne({ roomNumber: roomNumber});
     if (!room) {
       return res.status(404).json({ msg: "Room not found" });
     }
@@ -108,7 +108,7 @@ exports.updateMaintenanceRequestStatus = async (req, res) => {
 };
 
 
-exports.deleteMaintenanceRequest = async (req, res) => {
+/*exports.deleteMaintenanceRequest = async (req, res) => {
   try {
     const maintenanceRequest = await Maintenances.findById(req.params.id);
 
@@ -126,4 +126,23 @@ exports.deleteMaintenanceRequest = async (req, res) => {
     console.error(error);
     res.status(500).send("Server error");
   }
+};*/
+
+exports.deleteMaintenanceRequest = async (req, res) => {
+  try {
+    const maintenanceRequest = await Maintenances.findById(req.params.id);
+
+    if (!maintenanceRequest) {
+      return res.status(404).json({ msg: "Maintenance request not found" });
+    }
+
+    // Use deleteOne() to remove the maintenance request
+    await Maintenances.deleteOne({ _id: req.params.id });
+
+    res.json({ msg: "Maintenance request deleted" });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send("Server error");
+  }
 };
+

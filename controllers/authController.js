@@ -145,28 +145,39 @@ const authController = {
       // Get user input
       const { name, email, password, contactNumber } = request.body;
 
-      // check if user with the same email exists
-      const user = await User.findOne({ email });
+      // Validate inputs
+      if (!name || !email || !password || !contactNumber) {
+        return response.status(400).json({ message: "All fields are required." });
+      }
 
-      if (user) {
+      // Trim and validate name
+      const trimmedName = name.trim();
+      if (!trimmedName) {
+        return response.status(400).json({ message: "Username cannot be empty." });
+      }
+
+      // Check if a user with the same email exists
+      const userExists = await User.findOne({ email });
+
+      if (userExists) {
         return response.status(400).json({ message: "User already exists" });
       }
 
+      // Hash the password
       const passwordHash = await bcrypt.hash(password, 10);
 
-      // create user object
+      // Create user object
       const newUser = new User({
-        name,
-        email,
+        name: trimmedName, // Use trimmed and validated name for username
+        email: email.trim(),
         password: passwordHash,
-        contactNumber,
-        role: "user",
+        contactNumber: contactNumber.trim(),
+        role: "admin",
       });
 
-      // save user
+      // Save the user
       await newUser.save();
 
-      // send a response
       response.json({ message: "User registered successfully" });
     } catch (error) {
       response.status(500).json({ message: error.message });
