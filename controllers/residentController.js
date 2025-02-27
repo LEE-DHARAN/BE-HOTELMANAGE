@@ -101,7 +101,6 @@ exports.createResident = async (req, res) => {
 //   }
 // };
 
-
 exports.updateResident = async (req, res) => {
   const { id } = req.params;
   const { name, contact, email, roomId } = req.body;
@@ -127,7 +126,6 @@ exports.updateResident = async (req, res) => {
     res.status(500).send("Server error");
   }
 };
-
 
 exports.deleteResident = async (req, res) => {
   const { id } = req.params;

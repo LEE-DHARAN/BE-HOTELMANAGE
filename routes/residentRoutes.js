@@ -13,6 +13,6 @@ router.post("/resident", residentController.createResident);
 // router.put("/resident/:id",validateObjectId, residentController.updateResident);
 
 
-// router.delete("/resident/:id",validateObjectId, residentController.deleteResident);
+router.delete("/resident/:id",validateObjectId, residentController.deleteResident);
 
 module.exports = router;
