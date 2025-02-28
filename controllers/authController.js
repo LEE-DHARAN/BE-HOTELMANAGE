@@ -178,7 +178,7 @@ const authController = {
       // Save the user
       await newUser.save();
 
-      response.json({ message: "User registered successfully", role: newUser.role, email: newUser.email });
+      response.json({ message: "User registered successfully", role: newUser.role });
     } catch (error) {
       response.status(500).json({ message: error.message });
     }
@@ -217,7 +217,7 @@ const authController = {
       });
 
       // send a response
-      response.json({ message: "User logged in successfully", role: user.role, email: user.email });
+      response.json({ message: "User logged in successfully", role: user.role });
     } catch (error) {
       response.status(500).json({ message: error.message });
     }
